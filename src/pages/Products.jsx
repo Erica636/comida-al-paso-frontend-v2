@@ -56,7 +56,7 @@ function Products() {
             
         } catch (error) {
             console.error('Error al cargar datos:', error);
-            setError('Error al cargar los productos. Verifica que la API esté ejecutándose en http://localhost:5000');
+            setError('Error al cargar los productos. Verifica la conexión con el servidor.');
         } finally {
             setLoading(false);
         }
