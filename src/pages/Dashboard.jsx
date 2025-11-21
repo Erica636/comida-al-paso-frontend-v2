@@ -36,10 +36,16 @@ function Dashboard() {
         inventarioAPI.getProductos(),
         inventarioAPI.getCategorias()
       ]);
-      setProductos(productosData);
-      setCategorias(categoriasData);
+
+      // Extraer el array de results si viene paginado
+      const productos = productosData.results || productosData;
+      const categorias = categoriasData.results || categoriasData;
+
+      setProductos(Array.isArray(productos) ? productos : []);
+      setCategorias(Array.isArray(categorias) ? categorias : []);
     } catch (err) {
       setError('Error al cargar datos');
+      console.error(err);
     } finally {
       setLoading(false);
     }

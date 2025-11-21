@@ -12,7 +12,7 @@ function Home() {
     useEffect(() => {
         document.title = "Comida al Paso - Inicio";
         console.log("Componente Home montado - useEffect ejecutado");
-        
+
         return () => {
             console.log("Componente Home desmontado");
         };
@@ -21,7 +21,7 @@ function Home() {
     useEffect(() => {
         if (contador > 0) {
             console.log(`Contador actualizado: ${contador} visitantes`);
-            
+
             if (contador === 1) {
                 setMensajeBienvenida('¡Primer visitante del día! 🎉');
             } else if (contador === 10) {
@@ -62,23 +62,23 @@ function Home() {
                 <p className="text-xl text-gray-600 mb-8">
                     La mejor comida rápida de la ciudad, preparada con amor e ingredientes frescos
                 </p>
-                
+
                 <div className="bg-orange-100 p-6 rounded-lg mb-8 max-w-md mx-auto">
                     <h3 className="text-lg font-semibold mb-2">👥 Visitantes hoy</h3>
                     <div className="text-3xl font-bold text-orange-600 mb-4">{contador}</div>
-                    
+
                     {mensajeBienvenida && (
                         <div className="bg-yellow-100 text-yellow-800 p-2 rounded mb-4 text-sm">
                             {mensajeBienvenida}
                         </div>
                     )}
-                    
+
                     <div className="space-x-2">
                         <Button onClick={incrementarContador}>
                             👋 ¡Hola!
                         </Button>
-                        <Button 
-                            variant="secondary" 
+                        <Button
+                            variant="secondary"
                             onClick={reiniciarContador}
                             disabled={contador === 0}
                         >
@@ -98,14 +98,14 @@ function Home() {
                 </h2>
                 <div className="grid md:grid-cols-3 gap-6">
                     {productosDestacados.map(producto => (
-                        <ProductCard 
-                            key={producto.id} 
+                        <ProductCard
+                            key={producto.id}
                             producto={producto}
                             onClick={navegarAProducto}
                         />
                     ))}
                 </div>
-                
+
                 <div className="text-center mt-8">
                     <Button variant="secondary" onClick={navegarAProductos}>
                         Ver todos los productos →

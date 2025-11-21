@@ -49,12 +49,63 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('access', data.access);
       localStorage.setItem('refresh', data.refresh);
 
-      // Guardar usuario
-      const userData = { username };
-      localStorage.setItem('user', JSON.stringify(userData));
+      // Obtener información del usuario (incluyendo is_staff)
+      try {
+        const userResponse = await fetch(`${API_URL}/user/`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${data.access}`,
+            'Content-Type': 'application/json'
+          }
+        });
 
-      setIsAuthenticated(true);
-      setUser(userData);
+        let userData = { username };
+
+        if (userResponse.ok) {
+          const userInfo = await userResponse.json();
+          userData = {
+            username: userInfo.username,
+            email: userInfo.email,
+            is_staff: userInfo.is_staff
+          };
+        }
+
+        localStorage.setItem('user', JSON.stringify(userData));
+        setIsAuthenticated(true);
+        setUser(userData);
+
+        return { success: true };
+      } catch (err) {
+        // Si falla obtener info del usuario, usar datos básicos
+        const userData = { username };
+        localStorage.setItem('user', JSON.stringify(userData));
+        setIsAuthenticated(true);
+        setUser(userData);
+        return { success: true };
+      }
+    } catch (error) {
+      return { success: false, error: 'Error de conexión con el servidor' };
+    }
+  };
+
+  // Register
+  const register = async (formData) => {
+    try {
+      const response = await fetch(`${API_URL}/register/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+          email: formData.email
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { success: false, error: data.error || 'Error al crear la cuenta' };
+      }
 
       return { success: true };
     } catch (error) {
@@ -76,6 +127,7 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     login,
+    register,
     logout,
   };
 
